@@ -23,6 +23,17 @@ public class Student //TODO consider implementing any interfaces necessary for y
 
     public String getDetails() { return details; }
 
+//    @Override
+//    public int compareTo(Student student) {
+//        int compareName = name.compareTo(student.name);
+//        if (compareName != 0) {
+//            return compareName;
+//        } else {
+//            return dateOfBirth.compareTo(student.dateOfBirth);
+//        }
+//    }
+
+
     /*
     TODO consider overriding any methods for this object to function properly within a collection:
         1. A student is considered unique by a combination of their name and dateOfBirth

@@ -157,10 +157,13 @@ public class StudentSet implements Set<Student> {
         if (nodeToRemove == root){
             this.clear();
         } else {
-            nodeToRemove.parent.left = null;
-            nodeToRemove.parent.right = null;
+            if (nodeToRemove.parent.left == nodeToRemove){ // проверяем, если
+                nodeToRemove.parent.left = null;
+            } else {
+                nodeToRemove.parent.right = null;
+            }
+            size--;
         }
-        size--;
         return true;
     }
 

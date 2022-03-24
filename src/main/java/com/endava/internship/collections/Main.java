@@ -22,6 +22,10 @@ public class Main {
 
         System.out.println(studentSet.size());
 
+        studentSet.remove(student4);
+
+        System.out.println(studentSet.size());
+
         for (Student st : studentSet) {
             System.out.print(st.getName() + " - ");
         }

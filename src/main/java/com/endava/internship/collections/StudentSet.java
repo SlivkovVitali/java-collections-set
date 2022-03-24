@@ -26,7 +26,7 @@ public class StudentSet implements Set<Student> {
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(final Object o) {
         if (!(o instanceof Student)) {
             return false;
         }
@@ -35,7 +35,7 @@ public class StudentSet implements Set<Student> {
         return search(root, nodeToSearch) != null;
     }
 
-    private Node search(Node sourceNode, Node nodeToSearch) {
+    public Node search(final Node sourceNode, final Node nodeToSearch) {
         int compare = sourceNode.compareTo(nodeToSearch);
 
         if (compare < 0 && sourceNode.right != null) {
@@ -89,7 +89,7 @@ public class StudentSet implements Set<Student> {
     }
 
     @Override
-    public boolean add(Student student) {
+    public boolean add(final Student student) {
         if (size == 0) {
             root = new Node(student);
             size++;
@@ -136,8 +136,81 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public boolean remove(Object o) {
-        //TODO
-        return false;
+        Node nodeToRemove = new Node((Student) o);
+
+        nodeToRemove = search(root, nodeToRemove);
+        if (nodeToRemove == null){
+            return false;
+        }
+
+        if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() == null){
+            return removeWhenNoChild(nodeToRemove);
+        } else if (nodeToRemove.getLeft() == null){
+            return removeWhenOneRightChild(nodeToRemove);
+        } else if (nodeToRemove.getRight() == null){
+            return removeWhenOneLeftChild(nodeToRemove);
+        } else
+            return removeWhenTwoChild(nodeToRemove);
+    }
+
+    private boolean removeWhenNoChild(Node nodeToRemove){
+        if (nodeToRemove == root){
+            this.clear();
+        } else {
+            nodeToRemove.parent.left = null;
+            nodeToRemove.parent.right = null;
+        }
+        size--;
+        return true;
+    }
+
+    private boolean removeWhenOneRightChild(Node nodeToRemove) {
+        if (nodeToRemove == root) {
+            root = nodeToRemove.getRight();
+        } else {
+            nodeToRemove.parent.right = nodeToRemove.right;
+        }
+        size--;
+        return true;
+    }
+
+    private boolean removeWhenOneLeftChild(Node nodeToRemove) {
+        if (nodeToRemove == root) {
+            root = nodeToRemove.getLeft();
+        } else {
+            nodeToRemove.parent.left = nodeToRemove.left;
+        }
+        size--;
+        return true;
+    }
+
+    private boolean removeWhenTwoChild(Node nodeToRemove) {
+        Node successor = getSuccessor(nodeToRemove);
+        if (nodeToRemove == root) {
+            root = successor;
+        } else {
+            nodeToRemove.parent.right = successor;
+        }
+        size--;
+        return true;
+        }
+
+    private Node getSuccessor (Node removeNode){
+        Node successorParent = removeNode;
+        Node successor = removeNode;
+        Node current = removeNode.right;
+
+        while (current != null){
+            successorParent = successor;
+            successor = current;
+            current = current.left;
+        }
+
+        if (successor != removeNode.right){
+            successorParent.left = successor.right;
+            successor.right = removeNode.right;
+        }
+        return successor;
     }
 
     @Override
@@ -173,13 +246,29 @@ public class StudentSet implements Set<Student> {
     }
 
     class Node implements Comparable<Node> {
-        Node parent;
-        Node right;
-        Node left;
-        Student student;
+        private Node parent;
+        private Node right;
+        private Node left;
+        private Student student;
 
         private Node(Student student) {
             this.student = student;
+        }
+
+        public Node getParent() {
+            return parent;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public Student getStudent() {
+            return student;
         }
 
         @Override

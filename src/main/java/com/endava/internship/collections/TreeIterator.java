@@ -1,58 +1,61 @@
 package com.endava.internship.collections;
 
+import com.endava.internship.collections.StudentSet.Node;
+
 import java.util.Iterator;
 
-    public class TreeIterator implements Iterator<StudentSet.Node> {
-        private StudentSet.Node next;
 
-        TreeIterator(StudentSet.Node root){
+    public class TreeIterator implements Iterator<Node> {
+        private Node next;
+
+        public TreeIterator(Node root){
             next = root;
             goLeftMost();
         }
 
         private void goLeftMost() {
-            while (next.left != null){
-                next = next.left;
+            while (next.getLeft() != null){
+                next = next.getLeft();
             }
         }
 
         @Override
         public boolean hasNext(){
-            return next != null && next.student != null;
+            return next != null && next.getStudent() != null;
         }
 
         @Override
-        public StudentSet.Node next(){
-            StudentSet.Node sourceNode = next;
+        public Node next(){
+            Node sourceNode = next;
 
-            if (next.right != null){
-                return goRight(sourceNode);
+            if (next.getRight() != null){
+                return goRightAndLeftMost(sourceNode);
             }
 
             return goUp(sourceNode);
         }
 
-        private StudentSet.Node goRight(StudentSet.Node sourceNode){
-            next = next.right;
-            while (next.left != null){
-                next = next.left;
+        private Node goRightAndLeftMost(Node sourceNode){
+            next = next.getRight();
+            while (next.getLeft() != null){
+                next = next.getLeft();
             }
             return sourceNode;
         }
 
-        private StudentSet.Node goUp(StudentSet.Node sourceNode) {
+        private Node goUp(Node sourceNode) {
             while (true){
-                if (next.parent == null){
+                if (next.getParent() == null){
                     next = null;
                     return sourceNode;
                 }
 
-                if (next.parent.left == next){
-                    next = next.parent;
+                if (next.getParent().getLeft() == next){
+                    next = next.getParent();
                     return sourceNode;
                 }
 
-                next = next.parent;
+                next = next.getParent();
             }
         }
     }

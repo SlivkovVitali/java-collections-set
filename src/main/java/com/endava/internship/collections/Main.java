@@ -1,9 +1,6 @@
 package com.endava.internship.collections;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
 
@@ -18,32 +15,15 @@ public class Main {
         studentSet.add(student3);
         studentSet.add(student4);
         studentSet.add(student5);
-        System.out.println("size = " + studentSet.size());
 
         for (Student st : studentSet) {
-            System.out.print(st.getName() + " ");
+            System.out.print(st.getName() + " - ");
         }
-        studentSet.clear();
-        System.out.println();
-        System.out.println("isEmpty = " + studentSet.isEmpty());
-        System.out.println();
 
-        List<Student> list = new ArrayList<>();
-        list.add(student1);
-        list.add(student2);
-        list.add(student3);
-        list.add(student4);
-        list.add(student5);
+        System.out.println(studentSet.size());
 
-        studentSet.addAll(list);
-        Object[] st = studentSet.toArray();
-
-
-        for (Object st1 : st) {
-            Student s = (Student) st1;
-            System.out.print(s.getDateOfBirth() + " - ");
+        for (Student st : studentSet) {
+            System.out.print(st.getName() + " - ");
         }
-        System.out.println();
-        System.out.println("contains = " + studentSet.contains(student2));
     }
 }

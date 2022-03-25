@@ -49,7 +49,6 @@ public class StudentSet implements Set<Student> {
         if (compare == 0) {
             return sourceNode;
         }
-
         return null;
     }
 
@@ -153,55 +152,93 @@ public class StudentSet implements Set<Student> {
             return removeWhenTwoChild(nodeToRemove);
     }
 
+    /**
+     * Если узел не имеет потомков - то он просто удаляется
+     */
     private boolean removeWhenNoChild(Node nodeToRemove){
         if (nodeToRemove == root){
             this.clear();
+            root = null;
         } else {
-            if (nodeToRemove.parent.left == nodeToRemove){ // проверяем, если
-                nodeToRemove.parent.left = null;
+            if (nodeToRemove.getParent().getLeft() == nodeToRemove){
+                nodeToRemove.getParent().setLeft(null);
             } else {
-                nodeToRemove.parent.right = null;
+                nodeToRemove.getParent().setRight(null);
             }
             size--;
         }
         return true;
     }
 
+    /**
+     * Если нет левого потомка узел заменяется правым поддеревом
+     */
     private boolean removeWhenOneRightChild(Node nodeToRemove) {
         if (nodeToRemove == root) {
             root = nodeToRemove.getRight();
+            nodeToRemove.getRight().setParent(null);
+        } else if (nodeToRemove.getParent().getLeft() == nodeToRemove){
+            nodeToRemove.getParent().setLeft(nodeToRemove.getRight());
+            nodeToRemove.getLeft().setParent(nodeToRemove.getParent());
         } else {
-            nodeToRemove.parent.right = nodeToRemove.right;
+            nodeToRemove.getParent().setRight(nodeToRemove.getRight());
+            nodeToRemove.getRight().setParent(nodeToRemove.getParent());
         }
         size--;
         return true;
     }
 
+    /**
+     * Если нет правого потомка узел заменяется левым поддеревом
+     */
     private boolean removeWhenOneLeftChild(Node nodeToRemove) {
         if (nodeToRemove == root) {
             root = nodeToRemove.getLeft();
+            nodeToRemove.getLeft().setParent(null);
+        } else if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
+            nodeToRemove.getParent().setLeft(nodeToRemove.getLeft());
+            nodeToRemove.getLeft().setParent(nodeToRemove.getParent());
         } else {
-            nodeToRemove.parent.left = nodeToRemove.left;
+            nodeToRemove.getParent().setLeft(nodeToRemove.getRight());
+            nodeToRemove.getRight().setParent(nodeToRemove.getParent());
         }
         size--;
         return true;
     }
 
+    /**
+     * Если два потомка, узел заменяется приемником
+     */
     private boolean removeWhenTwoChild(Node nodeToRemove) {
         Node successor = getSuccessor(nodeToRemove);
         if (nodeToRemove == root) {
             root = successor;
+            successor.left = nodeToRemove.left;
+            nodeToRemove.left.parent = successor;
+        } else if (nodeToRemove.parent.left == nodeToRemove){
+            nodeToRemove.parent.left = successor;
+            successor.left = nodeToRemove.left;
+            nodeToRemove.left.parent = successor;
+            successor.parent = nodeToRemove.parent;
+            successor.right = nodeToRemove.right;
+            nodeToRemove.right.parent = successor;
         } else {
             nodeToRemove.parent.right = successor;
+            successor.left = nodeToRemove.left;
+            nodeToRemove.left.parent = successor;
+            successor.parent = nodeToRemove.parent;
+            successor.right = nodeToRemove.right;
+            nodeToRemove.right.parent = successor;
         }
+
         size--;
         return true;
         }
 
-    private Node getSuccessor (Node removeNode){
-        Node successorParent = removeNode;
-        Node successor = removeNode;
-        Node current = removeNode.right;
+    private Node getSuccessor (Node nodeToRemove){
+        Node successorParent = nodeToRemove;
+        Node successor = nodeToRemove;
+        Node current = nodeToRemove.right;
 
         while (current != null){
             successorParent = successor;
@@ -209,10 +246,11 @@ public class StudentSet implements Set<Student> {
             current = current.left;
         }
 
-        if (successor != removeNode.right){
+        if (successor != nodeToRemove.right){
             successorParent.left = successor.right;
-            successor.right = removeNode.right;
+            successor.right = nodeToRemove.right;
         }
+        System.out.println(successor.getStudent().getName());
         return successor;
     }
 
@@ -272,6 +310,22 @@ public class StudentSet implements Set<Student> {
 
         public Student getStudent() {
             return student;
+        }
+
+        public void setParent(Node parent) {
+            this.parent = parent;
+        }
+
+        public void setRight(Node right) {
+            this.right = right;
+        }
+
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        public void setStudent(Student student) {
+            this.student = student;
         }
 
         @Override

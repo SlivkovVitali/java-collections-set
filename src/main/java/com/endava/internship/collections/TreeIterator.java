@@ -4,7 +4,6 @@ import com.endava.internship.collections.StudentSet.Node;
 
 import java.util.Iterator;
 
-
     public class TreeIterator implements Iterator<Node> {
         private Node next;
 

@@ -1,19 +1,10 @@
 package com.endava.internship.collections;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StudentSet implements Set<Student> {
     private Node root;
-    private List<Student> list;
     private int size = 0;
-
-    public StudentSet() {
-        list = new LinkedList<>();
-    }
 
     @Override
     public int size() {
@@ -82,10 +73,9 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public <T> T[] toArray(T[] ts) {
-        T[] result = (T[]) new Object[this.size()];
-        System.arraycopy(list, 0, result, 0, this.size());
-        System.arraycopy(list, 0, result, 0, this.size());
-        return result;
+        Object[] objects = toArray();
+        ts = (T[]) Arrays.copyOf(objects, objects.length);
+        return ts;
     }
 
     @Override
@@ -230,7 +220,7 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public void clear() {
-        list = new LinkedList<>();
+        root = null;
         size = 0;
     }
 

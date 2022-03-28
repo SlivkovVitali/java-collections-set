@@ -1,6 +1,10 @@
 package com.endava.internship.collections;
 
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 public class StudentSet implements Set<Student> {
     private Node root;

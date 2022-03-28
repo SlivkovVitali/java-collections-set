@@ -129,7 +129,7 @@ public class StudentSet implements Set<Student> {
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(final Object o) {
         if (size == 0 || (!(o instanceof Student))) {
             return false;
         }
@@ -151,7 +151,7 @@ public class StudentSet implements Set<Student> {
             return removeWhenTwoChild(nodeToRemove);
     }
 
-    private boolean removeWhenNoChild(Node nodeToRemove) {
+    private boolean removeWhenNoChild(final Node nodeToRemove) {
         if (nodeToRemove == root) {
             this.clear();
             root = null;
@@ -166,7 +166,7 @@ public class StudentSet implements Set<Student> {
         return true;
     }
 
-    private boolean removeWhenOneRightChild(Node nodeToRemove) {
+    private boolean removeWhenOneRightChild(final Node nodeToRemove) {
         if (nodeToRemove == root) {
             root = nodeToRemove.getRight();
             nodeToRemove.getRight().setParent(null);
@@ -182,7 +182,7 @@ public class StudentSet implements Set<Student> {
         return true;
     }
 
-    private boolean removeWhenOneLeftChild(Node nodeToRemove) {
+    private boolean removeWhenOneLeftChild(final Node nodeToRemove) {
         if (nodeToRemove == root) {
             root = nodeToRemove.getLeft();
             nodeToRemove.getLeft().setParent(null);
@@ -198,7 +198,7 @@ public class StudentSet implements Set<Student> {
         return true;
     }
 
-    private boolean removeWhenTwoChild(Node nodeToRemove) {
+    private boolean removeWhenTwoChild(final Node nodeToRemove) {
 
         Node successor = getSuccessor(nodeToRemove);
         nodeToRemove.setStudent(successor.getStudent());
@@ -211,7 +211,7 @@ public class StudentSet implements Set<Student> {
         return true;
     }
 
-    private Node getSuccessor(Node nodeToRemove) {
+    private Node getSuccessor(final Node nodeToRemove) {
         Node successor = nodeToRemove;
         Node current = nodeToRemove.right;
 
@@ -229,7 +229,7 @@ public class StudentSet implements Set<Student> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends Student> collection) {
+    public boolean addAll(final Collection<? extends Student> collection) {
         for (Student student : collection) {
             this.add(student);
         }
@@ -297,7 +297,7 @@ public class StudentSet implements Set<Student> {
         }
 
         @Override
-        public int compareTo(Node nodeToCompare) {
+        public int compareTo(final Node nodeToCompare) {
             return this.student.compareTo(nodeToCompare.student);
         }
     }

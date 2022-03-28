@@ -7,7 +7,7 @@ import java.util.Iterator;
     public class TreeIterator implements Iterator<Node> {
         private Node next;
 
-        public TreeIterator(Node root){
+        public TreeIterator(final Node root){
             next = root;
             goLeftMost();
         }
@@ -34,7 +34,7 @@ import java.util.Iterator;
             return goUp(sourceNode);
         }
 
-        private Node goRightAndLeftMost(Node sourceNode){
+        private Node goRightAndLeftMost(final Node sourceNode){
             next = next.getRight();
             while (next.getLeft() != null){
                 next = next.getLeft();
@@ -42,7 +42,7 @@ import java.util.Iterator;
             return sourceNode;
         }
 
-        private Node goUp(Node sourceNode) {
+        private Node goUp(final Node sourceNode) {
             while (true){
                 if (next.getParent() == null){
                     next = null;

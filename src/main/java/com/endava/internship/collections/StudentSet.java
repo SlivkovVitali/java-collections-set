@@ -170,13 +170,14 @@ public class StudentSet implements Set<Student> {
         if (nodeToRemove == root) {
             root = nodeToRemove.getRight();
             nodeToRemove.getRight().setParent(null);
-        } else
+        } else {
             nodeToRemove.getRight().setParent(nodeToRemove.getParent());
 
-        if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
-            nodeToRemove.getParent().setLeft(nodeToRemove.getRight());
-        } else {
-            nodeToRemove.getParent().setRight(nodeToRemove.getRight());
+            if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
+                nodeToRemove.getParent().setLeft(nodeToRemove.getRight());
+            } else {
+                nodeToRemove.getParent().setRight(nodeToRemove.getRight());
+            }
         }
         size--;
         return true;
@@ -186,13 +187,14 @@ public class StudentSet implements Set<Student> {
         if (nodeToRemove == root) {
             root = nodeToRemove.getLeft();
             nodeToRemove.getLeft().setParent(null);
-        } else
+        } else {
             nodeToRemove.getLeft().setParent(nodeToRemove.getParent());
 
-        if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
-            nodeToRemove.getParent().setLeft(nodeToRemove.getLeft());
-        } else {
-            nodeToRemove.getParent().setRight(nodeToRemove.getLeft());
+            if (nodeToRemove.getParent().getLeft() == nodeToRemove) {
+                nodeToRemove.getParent().setLeft(nodeToRemove.getLeft());
+            } else {
+                nodeToRemove.getParent().setRight(nodeToRemove.getLeft());
+            }
         }
         size--;
         return true;
@@ -238,20 +240,45 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public boolean containsAll(Collection<?> collection) {
-        //Ignore this for homework
-        throw new UnsupportedOperationException();
+        for (final Object item : collection) {
+            if (!(item instanceof Student)) {
+                throw new UnsupportedOperationException();
+            }
+            if (!this.contains(item)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean retainAll(Collection<?> collection) {
-        //Ignore this for homework
-        throw new UnsupportedOperationException();
+        boolean changed = false;
+
+        Iterator<Student> iterator = iterator();
+
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
+            if (!collection.contains(student)) {
+                remove(student);
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        //Ignore this for homework
-        throw new UnsupportedOperationException();
+        boolean changed = false;
+        for (final Object item : collection) {
+            if (!(item instanceof Student)) {
+                throw new UnsupportedOperationException();
+            }
+            if (remove(item)) {
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     class Node implements Comparable<Node> {

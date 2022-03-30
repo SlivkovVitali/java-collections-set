@@ -1,27 +1,21 @@
 package com.endava.internship.collections;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDate;
 
 /**
  * The class that defines the element that will be contained by your collection
  */
+
+@Getter
+@RequiredArgsConstructor
 public class Student implements Comparable<Student>{
 
-    private String name;
-    private LocalDate dateOfBirth;
-    private String details;
-
-    public Student(String name, LocalDate dateOfBirth, String details) {
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-        this.details = details;
-    }
-
-    public String getName() { return name; }
-
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
-
-    public String getDetails() { return details; }
+    private final String name;
+    private final LocalDate dateOfBirth;
+    private final String details;
 
     @Override
     public int compareTo(Student student) {

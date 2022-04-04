@@ -1,6 +1,9 @@
 package com.endava.internship.collections;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -23,5 +26,21 @@ public class Main {
         System.out.println();
 
         System.out.println("size = " + studentSet.size());
+
+        List<Student> students = new ArrayList<>();
+        students.add(student1);
+        students.add(student2);
+        students.add(student3);
+        students.add(student4);
+        students.add(student5);
+
+        System.out.println(studentSet.retainAll(students));
+
+        System.out.println("size = " + studentSet.size());
+
+        for (Student st : studentSet) {
+            System.out.print(st.getName() + " ");
+        }
+
     }
 }

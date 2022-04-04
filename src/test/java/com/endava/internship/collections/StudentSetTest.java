@@ -15,19 +15,19 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StudentSetTest {
-    StudentSet studentSetTest;
-    Student student1;
-    Student student2;
-    Student student3;
-    Student student4;
+    private StudentSet studentSetTest;
+    private Student studentA;
+    private Student studentB;
+    private Student studentC;
+    private Student studentD;
 
     @BeforeEach
     public void setUp() {
         studentSetTest = new StudentSet();
-        student1 = new Student("A", LocalDate.of(1990, 11, 1), "");
-        student2 = new Student("B", LocalDate.of(1990, 11, 1), "");
-        student3 = new Student("C", LocalDate.of(1990, 11, 1), "");
-        student4 = new Student("D", LocalDate.of(1990, 11, 1), "");
+        studentA = new Student("A", LocalDate.of(1990, 11, 1), "");
+        studentB = new Student("B", LocalDate.of(1990, 11, 1), "");
+        studentC = new Student("C", LocalDate.of(1990, 11, 1), "");
+        studentD = new Student("D", LocalDate.of(1990, 11, 1), "");
     }
 
     @Test
@@ -37,7 +37,7 @@ class StudentSetTest {
 
     @Test
     void testSizeWhenSizeIsNotZero() {
-        studentSetTest.add(student1);
+        studentSetTest.add(studentA);
         assertEquals(1, studentSetTest.size(), "Collection show the wrong size");
     }
 
@@ -48,7 +48,7 @@ class StudentSetTest {
 
     @Test
     void testIsEmptyWhenIsNotEmpty() {
-        studentSetTest.add(student1);
+        studentSetTest.add(studentA);
         assertFalse(studentSetTest.isEmpty(), "The collection is empty!");
     }
 
@@ -56,15 +56,15 @@ class StudentSetTest {
     void testContains() {
         studentSetFilling();
 
-        assertTrue(studentSetTest.contains(student1), "Collection cannot find existing element in itself");
-        assertTrue(studentSetTest.contains(student2), "Collection cannot find existing element in itself");
-        assertFalse(studentSetTest.contains(student3), "Collection could find in itself a nonexistent element");
+        assertTrue(studentSetTest.contains(studentA), "Collection cannot find existing element in itself");
+        assertTrue(studentSetTest.contains(studentB), "Collection cannot find existing element in itself");
+        assertFalse(studentSetTest.contains(studentC), "Collection could find in itself a nonexistent element");
     }
 
     @Test
     void testAddSameElement() {
-        studentSetTest.add(student1);
-        assertFalse(studentSetTest.add(student1), "Collection could add in itself a existent element");
+        studentSetTest.add(studentA);
+        assertFalse(studentSetTest.add(studentA), "Collection could add in itself a existent element");
     }
 
 
@@ -77,16 +77,16 @@ class StudentSetTest {
 
     @Test
     void testIterator() {
-        studentSetTest.add(student2);
-        studentSetTest.add(student1);
-        studentSetTest.add(student4);
-        studentSetTest.add(student3);
+        studentSetTest.add(studentB);
+        studentSetTest.add(studentA);
+        studentSetTest.add(studentD);
+        studentSetTest.add(studentC);
 
         final Iterator<Student> iterator = studentSetTest.iterator();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
+        for (int i = 0; i < 4; i++) {
+            iterator.next();
+
+        }
         assertFalse(iterator.hasNext(), "Iterator not working properly");
     }
 
@@ -94,7 +94,7 @@ class StudentSetTest {
     void testToArray() {
         studentSetFilling();
 
-        final Object[] input = new Object[]{student1, student2};
+        final Object[] input = new Object[]{studentA, studentB};
         final Object[] result = studentSetTest.toArray();
 
         assertArrayEquals(result, input, "Incoming and outgoing arrays do not match");
@@ -104,7 +104,7 @@ class StudentSetTest {
     void testToArrayObject() {
         studentSetFilling();
 
-        final Object[] input = new Object[]{student1, student2};
+        final Object[] input = new Object[]{studentA, studentB};
         final Object[] result = studentSetTest.toArray(new Object[0]);
 
         assertArrayEquals(result, input, "Incoming and outgoing arrays do not match");
@@ -122,13 +122,13 @@ class StudentSetTest {
     void testRemoveWhenCollectionDoesNotHaveThatElement() {
         studentSetFilling();
 
-        assertFalse(studentSetTest.remove(student3), "Collection could remove in itself a nonexistent element");
+        assertFalse(studentSetTest.remove(studentC), "Collection could remove in itself a nonexistent element");
     }
 
     @Test
     void testRemoveWhenElementHasNoChild() {
-        studentSetTest.add(student1);
-        studentSetTest.remove(student1);
+        studentSetTest.add(studentA);
+        studentSetTest.remove(studentA);
 
         assertTrue(studentSetTest.isEmpty(), "After removing a single element, the collection thinks it is not empty");
         assertEquals(0, studentSetTest.size(), "After removing a single element, the collection size is wrong");
@@ -136,81 +136,80 @@ class StudentSetTest {
 
     @Test
     void testRemoveWhenElementHasOneLeftChild() {
-        studentSetTest.add(student3);
-        studentSetTest.add(student2);
-        studentSetTest.add(student1);
+        studentSetTest.add(studentC);
+        studentSetTest.add(studentB);
+        studentSetTest.add(studentA);
 
-        studentSetTest.remove(student2);
+        studentSetTest.remove(studentB);
 
-        assertFalse(studentSetTest.contains(student2), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentB), "Collection contains the removed element");
 
-        studentSetTest.remove(student1);
-        assertFalse(studentSetTest.contains(student1), "Collection contains the removed element");
+        studentSetTest.remove(studentA);
+        assertFalse(studentSetTest.contains(studentA), "Collection contains the removed element");
     }
 
     @Test
     void testRemoveWhenLeftElementHasOneLeftChild() {
-        studentSetTest.add(student2);
-        studentSetTest.add(student1);
+        studentSetTest.add(studentB);
+        studentSetTest.add(studentA);
 
-        studentSetTest.remove(student2);
+        studentSetTest.remove(studentB);
 
-        assertFalse(studentSetTest.contains(student2), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentB), "Collection contains the removed element");
     }
 
     @Test
     void testRemoveWhenRightElementHasOneLeftChild() {
-        studentSetTest.add(student1);
-        studentSetTest.add(student3);
-        studentSetTest.add(student2);
+        studentSetTest.add(studentA);
+        studentSetTest.add(studentC);
+        studentSetTest.add(studentB);
 
-        studentSetTest.remove(student3);
+        studentSetTest.remove(studentC);
 
-        assertFalse(studentSetTest.contains(student3), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentC), "Collection contains the removed element");
     }
 
     @Test
     void testRemoveWhenRightElementHasOneRightChild() {
         studentSetFilling();
-        studentSetTest.add(student3);
+        studentSetTest.add(studentC);
+        studentSetTest.remove(studentB);
 
-        studentSetTest.remove(student2);
-
-        assertFalse(studentSetTest.contains(student2), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentB), "Collection contains the removed element");
     }
 
     @Test
     void testRemoveWhenLeftElementHasOneRightChild() {
-        studentSetTest.add(student3);
-        studentSetTest.add(student1);
-        studentSetTest.add(student2);
+        studentSetTest.add(studentC);
+        studentSetTest.add(studentA);
+        studentSetTest.add(studentB);
 
-        studentSetTest.remove(student1);
+        studentSetTest.remove(studentA);
 
-        assertFalse(studentSetTest.contains(student1), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentA), "Collection contains the removed element");
     }
 
     @Test
     void testRemoveWhenElementHasTwoChildren() {
-        studentSetTest.add(student2);
-        studentSetTest.add(student1);
-        studentSetTest.add(student3);
+        studentSetTest.add(studentB);
+        studentSetTest.add(studentA);
+        studentSetTest.add(studentC);
 
-        studentSetTest.remove(student2);
+        studentSetTest.remove(studentB);
 
-        assertFalse(studentSetTest.contains(student2), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentB), "Collection contains the removed element");
     }
 
     @Test
     void testRemoveWhenElementHasTwoChildrenAndSuccessorHasRight() {
-        studentSetTest.add(student2);
-        studentSetTest.add(student1);
-        studentSetTest.add(student3);
-        studentSetTest.add(student4);
+        studentSetTest.add(studentB);
+        studentSetTest.add(studentA);
+        studentSetTest.add(studentC);
+        studentSetTest.add(studentD);
 
-        studentSetTest.remove(student2);
+        studentSetTest.remove(studentB);
 
-        assertFalse(studentSetTest.contains(student2), "Collection contains the removed element");
+        assertFalse(studentSetTest.contains(studentB), "Collection contains the removed element");
     }
 
     @Test
@@ -228,13 +227,13 @@ class StudentSetTest {
         studentSetFilling();
 
         final List<Student> students = new ArrayList<>();
-        students.add(student3);
-        students.add(student4);
+        students.add(studentC);
+        students.add(studentD);
 
         studentSetTest.addAll(students);
 
-        assertTrue(studentSetTest.contains(student3), "The collection does not contains items added by the addAll method");
-        assertTrue(studentSetTest.contains(student4), "The collection does not contains items added by the addAll method");
+        assertTrue(studentSetTest.contains(studentC), "The collection does not contains items added by the addAll method");
+        assertTrue(studentSetTest.contains(studentD), "The collection does not contains items added by the addAll method");
     }
 
     @Test
@@ -242,8 +241,8 @@ class StudentSetTest {
         studentSetFilling();
 
         final List<Student> studentList = new ArrayList<>();
-        studentList.add(student2);
-        studentList.add(student1);
+        studentList.add(studentB);
+        studentList.add(studentA);
 
         assertTrue(studentSetTest.containsAll(studentList), "The collection does not contain required elements");
     }
@@ -275,23 +274,23 @@ class StudentSetTest {
         studentSetFilling();
 
         final List<Student> students = new ArrayList<>();
-        students.add(student2);
-        students.add(student3);
+        students.add(studentB);
+        students.add(studentC);
 
         studentSetTest.retainAll(students);
         assertEquals(1, studentSetTest.size(), "After executing the method, the size of the collection is incorrect");
-        assertTrue(studentSetTest.contains(student2), "After executing the method, the collection does not contain the required elements");
+        assertTrue(studentSetTest.contains(studentB), "After executing the method, the collection does not contain the required elements");
     }
 
     @Test
     void testRemoveAll() {
         studentSetFilling();
-        studentSetTest.add(student3);
-        studentSetTest.add(student4);
+        studentSetTest.add(studentC);
+        studentSetTest.add(studentD);
 
         final List<Student> students = new ArrayList<>();
-        students.add(student2);
-        students.add(student4);
+        students.add(studentB);
+        students.add(studentD);
 
         studentSetTest.removeAll(students);
 
@@ -300,7 +299,7 @@ class StudentSetTest {
     }
 
     private void studentSetFilling() {
-        studentSetTest.add(student1);
-        studentSetTest.add(student2);
+        studentSetTest.add(studentA);
+        studentSetTest.add(studentB);
     }
 }
